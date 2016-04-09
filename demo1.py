@@ -1,21 +1,20 @@
-#/usr/bin/env python
+#!/usr/bin/python
 
 import os
+import socket
 import struct
+import argparse
 import tools as t
-
-#from PIL import ImageGrab
-
 
 
 p = 'v:\\'
 
 g_cmd = ''
-while g_cmd != 'exit':
+while g_cmd:
     g_cmd = raw_input('>')
     gp = t.get_cmd_group(g_cmd)
     if gp[0] == 'ls':
-        a1 =  os.listdir(p)
+        a1 = os.listdir(p)
         for i in a1:
             print i
 
@@ -47,7 +46,22 @@ while g_cmd != 'exit':
     elif gp[0] == 'pipe':
         var = os.popen(gp[1]).read()
         print var
+    elif gp[0] == 'host':
+        host = socket.gethostname()
+        print host
+    elif gp[0] == 'ip':
+        host = socket.gethostname()
+        ip = socket.gethostbyname(host)
+        print ip
     elif gp[0] == 'exit':
         print 'exit'
     else:
         print 'error cmd'
+
+if __name__ == '__main__':
+    host = socket.gethostname()
+    ip = socket.gethostbyname(host)
+    parse = argparse.ArgumentParser()
+    parse.add_argument('-ip', default=ip, required=False)
+    given_args = parse.parse_args()
+    print given_args.ip

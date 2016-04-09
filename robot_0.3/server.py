@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import socket
+import argparse
 import struct
 import common
 import request_handle
@@ -61,5 +62,14 @@ class RServer(object):
         return True
 
 if __name__ == '__main__':
-    server = RServer()
+    host = socket.gethostname()
+    ip = socket.gethostbyname(host)
+
+    parse = argparse.ArgumentParser()
+    parse.add_argument('-ip', default=ip, required=False)
+    parse.add_argument('-port', default=SERVER_PORT, type=int, required=False)
+    given_args = parse.parse_args()
+
+    print 'ip:[%s] port:[%d]' % (given_args.ip, given_args.port)
+    server = RServer(given_args.ip, given_args.port)
     server.run()
